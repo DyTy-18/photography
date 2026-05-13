@@ -452,37 +452,162 @@
         /* ── LIGHTBOX ── */
         .lightbox {
             position: fixed; inset: 0; z-index: 2000;
-            background: rgba(8,7,4,.97);
-            display: none; align-items: center; justify-content: center;
+            background: rgba(8,7,4,.98);
+            display: none;
         }
         .lightbox.open { display: flex; }
-        .lightbox-img {
-            max-width: 90vw; max-height: 88vh; object-fit: contain;
-            animation: lbIn .3s ease;
-        }
-        @keyframes lbIn { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+
         .lb-close {
-            position: absolute; top: 1.5rem; right: 2rem;
+            position: absolute; top: 1.5rem; right: 2rem; z-index: 10;
             font-size: .58rem; letter-spacing: .2em; text-transform: uppercase;
             color: rgba(237,227,204,.35); cursor: none; transition: color .3s;
             background: none; border: none;
         }
         .lb-close:hover { color: var(--cream); }
+
+        /* left — photo */
+        .lb-left {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 4rem 2rem 4rem 2rem;
+            position: relative; min-width: 0;
+        }
+        .lightbox-img {
+            max-width: 100%; max-height: 82vh; object-fit: contain;
+            animation: lbIn .35s ease;
+        }
+        @keyframes lbIn { from { opacity:0; transform:scale(.97); } to { opacity:1; transform:scale(1); } }
+
+        .lb-nav {
+            display: flex; gap: 2rem; margin-top: 1.5rem;
+        }
         .lb-prev, .lb-next {
-            position: absolute; top: 50%; transform: translateY(-50%);
-            background: none; border: none; cursor: none;
-            color: rgba(237,227,204,.3); padding: 1.5rem; transition: color .3s;
-            font-size: 1.2rem;
+            background: none; border: 1px solid var(--border); cursor: none;
+            color: rgba(237,227,204,.35); padding: .6rem 1.4rem;
+            font-size: 1rem; transition: color .25s, border-color .25s;
+            letter-spacing: .1em;
         }
-        .lb-prev:hover, .lb-next:hover { color: var(--cream); }
-        .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
-        .lb-caption {
-            position: absolute; bottom: 2rem; left: 50%;
-            transform: translateX(-50%); text-align: center;
+        .lb-prev:hover, .lb-next:hover { color: var(--cream); border-color: var(--muted); }
+
+        /* right — info panel */
+        .lb-right {
+            width: 380px; flex-shrink: 0;
+            background: var(--smoke);
+            border-left: 1px solid var(--border);
+            display: flex; flex-direction: column;
+            overflow-y: auto;
         }
-        .lb-caption p {
-            font-size: .55rem; letter-spacing: .22em; text-transform: uppercase;
-            color: rgba(237,227,204,.3);
+
+        .lb-panel-head {
+            padding: 3rem 2rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .lb-panel-eyebrow {
+            font-size: .52rem; letter-spacing: .25em; text-transform: uppercase;
+            color: var(--terracotta); margin-bottom: .8rem;
+            display: flex; align-items: center; gap: .6rem;
+        }
+        .lb-panel-eyebrow .gps-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: var(--terracotta);
+            box-shadow: 0 0 0 0 rgba(196,87,31,.5);
+            animation: gpsPulse 1.8s ease-out infinite;
+        }
+        @keyframes gpsPulse {
+            0%  { box-shadow: 0 0 0 0 rgba(196,87,31,.5); }
+            70% { box-shadow: 0 0 0 8px rgba(196,87,31,0); }
+            100%{ box-shadow: 0 0 0 0 rgba(196,87,31,0); }
+        }
+        .lb-panel-name {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem; line-height: 1.15;
+            color: var(--cream); min-height: 2em;
+        }
+        .lb-cursor {
+            display: inline-block; width: 2px; height: 1.1em;
+            background: var(--terracotta); margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: curBlink .7s step-end infinite;
+        }
+        @keyframes curBlink { 50% { opacity: 0; } }
+        .lb-panel-meta {
+            margin-top: .6rem;
+            font-size: .52rem; letter-spacing: .18em; text-transform: uppercase;
+            color: rgba(237,227,204,.3); display: flex; gap: 1rem; flex-wrap: wrap;
+        }
+        .lb-panel-meta .meta-alt { color: var(--ochre); }
+
+        /* route SVG animation */
+        .lb-route-wrap {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .lb-route-label {
+            font-size: .5rem; letter-spacing: .2em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: .8rem;
+        }
+        .lb-route-svg {
+            width: 100%; height: 80px; overflow: visible;
+        }
+        .lb-route-terrain {
+            stroke: rgba(196,87,31,.1); stroke-width: 1; fill: none;
+        }
+        .lb-route-path {
+            stroke: var(--terracotta); stroke-width: 1.5; fill: none;
+            stroke-linecap: round; stroke-linejoin: round;
+            stroke-dasharray: 340;
+            stroke-dashoffset: 340;
+        }
+        .lb-route-path.animate {
+            animation: drawRoute 1.6s cubic-bezier(.4,0,.2,1) forwards;
+        }
+        @keyframes drawRoute { to { stroke-dashoffset: 0; } }
+        .lb-route-dot {
+            fill: var(--terracotta); opacity: 0;
+        }
+        .lb-route-dot.animate {
+            animation: showDot .3s ease forwards 1.5s;
+        }
+        @keyframes showDot { to { opacity: 1; } }
+        .lb-route-dot-pulse {
+            fill: none; stroke: var(--terracotta); stroke-width: 1; opacity: 0;
+        }
+        .lb-route-dot-pulse.animate {
+            animation: pulseDot 1.6s ease-out infinite 1.8s, showDot .1s ease forwards 1.5s;
+        }
+        @keyframes pulseDot {
+            0%   { r: 5; opacity: .6; }
+            100% { r: 14; opacity: 0; }
+        }
+
+        /* map iframe */
+        .lb-map-wrap {
+            flex: 1; min-height: 220px; position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+        .lb-map-wrap iframe {
+            width: 100%; height: 100%; min-height: 220px;
+            border: none; filter: grayscale(.55) invert(.88) hue-rotate(180deg) brightness(.9) contrast(1.1);
+        }
+        .lb-map-overlay {
+            position: absolute; inset: 0; pointer-events: none;
+            background: linear-gradient(to bottom, var(--smoke) 0%, transparent 18%, transparent 82%, var(--smoke) 100%);
+        }
+
+        /* footer info */
+        .lb-panel-foot {
+            padding: 1.5rem 2rem;
+        }
+        .lb-panel-category {
+            font-size: .55rem; letter-spacing: .2em; text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        @media (max-width: 768px) {
+            .lightbox.open { flex-direction: column; }
+            .lb-right { width: 100%; flex-shrink: 0; height: 60vh; }
+            .lb-left { padding: 1.5rem 1rem; }
+            .lightbox-img { max-height: 40vh; }
         }
 
         /* ── VIDEO MODAL ── */
@@ -654,7 +779,9 @@
             <!-- 01 Llullailaco — full, el volcán abre la galería -->
             <div class="gallery-item col-12 h-hero" data-cat="volcanes"
                  data-src="https://picsum.photos/seed/llullailaco-6739/1600/900"
-                 data-title="Volcán Llullailaco" data-category="Volcanes · 6.739 m">
+                 data-title="Volcán Llullailaco" data-category="Volcanes · 6.739 m"
+                 data-location="Volcán Llullailaco" data-coords="24°43′S 68°32′O" data-alt="6.739 m"
+                 data-lat="-24.717" data-lng="-68.533">
                 <img src="https://picsum.photos/seed/llullailaco-6739/1600/900" alt="Volcán Llullailaco" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -667,7 +794,9 @@
             <!-- 02 San Antonio (7) + 03 Salta (5) -->
             <div class="gallery-item col-7 h-tall" data-cat="argentina"
                  data-src="https://picsum.photos/seed/san-antonio-cobres/900/1200"
-                 data-title="San Antonio de Los Cobres" data-category="Argentina · Salta">
+                 data-title="San Antonio de Los Cobres" data-category="Argentina · Salta"
+                 data-location="San Antonio de Los Cobres" data-coords="24°13′S 66°20′O" data-alt="3.775 m"
+                 data-lat="-24.217" data-lng="-66.333">
                 <img src="https://picsum.photos/seed/san-antonio-cobres/900/1200" alt="San Antonio de Los Cobres" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -679,7 +808,9 @@
 
             <div class="gallery-item col-5 h-tall" data-cat="argentina"
                  data-src="https://picsum.photos/seed/salta-argentina/700/1200"
-                 data-title="Salta" data-category="Argentina">
+                 data-title="Salta" data-category="Argentina"
+                 data-location="Salta" data-coords="24°47′S 65°24′O" data-alt="1.187 m"
+                 data-lat="-24.783" data-lng="-65.4">
                 <img src="https://picsum.photos/seed/salta-argentina/700/1200" alt="Salta" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -708,7 +839,9 @@
             <!-- 04 Jatun Q'asa (7) + 05 Serkhe Koullo (5) -->
             <div class="gallery-item col-7 h-mid" data-cat="bolivia"
                  data-src="https://picsum.photos/seed/jatun-qasa-cbba/1100/800"
-                 data-title="Jatun Q'asa" data-category="Bolivia · Cochabamba">
+                 data-title="Jatun Q'asa" data-category="Bolivia · Cochabamba"
+                 data-location="Jatun Q'asa" data-coords="17°26′S 65°48′O" data-alt="~4.500 m"
+                 data-lat="-17.433" data-lng="-65.8">
                 <img src="https://picsum.photos/seed/jatun-qasa-cbba/1100/800" alt="Jatun Q'asa" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -720,7 +853,9 @@
 
             <div class="gallery-item col-5 h-mid" data-cat="bolivia"
                  data-src="https://picsum.photos/seed/serkhe-koullo-lpz/700/800"
-                 data-title="Serkhe Koullo" data-category="Bolivia · La Paz">
+                 data-title="Serkhe Koullo" data-category="Bolivia · La Paz"
+                 data-location="Serkhe Koullo" data-coords="16°30′S 68°10′O" data-alt="~5.100 m"
+                 data-lat="-16.5" data-lng="-68.167">
                 <img src="https://picsum.photos/seed/serkhe-koullo-lpz/700/800" alt="Serkhe Koullo" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -733,7 +868,9 @@
             <!-- 06 Jericó (4) + 07 Puerto Rico (4) + Video Pando (4) -->
             <div class="gallery-item col-4 h-tall" data-cat="selva"
                  data-src="https://picsum.photos/seed/jerico-pando-bv/600/950"
-                 data-title="Jericó" data-category="Selva · Pando">
+                 data-title="Jericó" data-category="Selva · Pando"
+                 data-location="Jericó, Pando" data-coords="11°02′S 68°04′O" data-alt="~200 m"
+                 data-lat="-11.033" data-lng="-68.067">
                 <img src="https://picsum.photos/seed/jerico-pando-bv/600/950" alt="Jericó, Pando" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -745,7 +882,9 @@
 
             <div class="gallery-item col-4 h-tall" data-cat="selva"
                  data-src="https://picsum.photos/seed/puerto-rico-pando-bv/600/950"
-                 data-title="Puerto Rico" data-category="Selva · Pando">
+                 data-title="Puerto Rico" data-category="Selva · Pando"
+                 data-location="Puerto Rico, Pando" data-coords="11°06′S 67°33′O" data-alt="~200 m"
+                 data-lat="-11.1" data-lng="-67.55">
                 <img src="https://picsum.photos/seed/puerto-rico-pando-bv/600/950" alt="Puerto Rico, Pando" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -773,7 +912,9 @@
             <!-- 08 Uturuncu (8) + detalle Potosí (4) -->
             <div class="gallery-item col-8 h-mid" data-cat="volcanes"
                  data-src="https://picsum.photos/seed/uturuncu-6008/1200/800"
-                 data-title="Volcán Uturuncu" data-category="Volcanes · 6.008 m">
+                 data-title="Volcán Uturuncu" data-category="Volcanes · 6.008 m"
+                 data-location="Volcán Uturuncu" data-coords="22°16′S 67°11′O" data-alt="6.008 m"
+                 data-lat="-22.267" data-lng="-67.183">
                 <img src="https://picsum.photos/seed/uturuncu-6008/1200/800" alt="Volcán Uturuncu" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -785,7 +926,9 @@
 
             <div class="gallery-item col-4 h-mid" data-cat="bolivia"
                  data-src="https://picsum.photos/seed/altiplano-potosi/600/800"
-                 data-title="Altiplano" data-category="Bolivia · Potosí">
+                 data-title="Altiplano" data-category="Bolivia · Potosí"
+                 data-location="Altiplano, Potosí" data-coords="20°10′S 66°18′O" data-alt="~3.700 m"
+                 data-lat="-20.167" data-lng="-66.3">
                 <img src="https://picsum.photos/seed/altiplano-potosi/600/800" alt="Altiplano, Potosí" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -798,7 +941,9 @@
             <!-- 09 Licancabur — full, cierre épico -->
             <div class="gallery-item col-12 h-hero" data-cat="volcanes"
                  data-src="https://picsum.photos/seed/licancabur-5916/1600/900"
-                 data-title="Volcán Licancabur" data-category="Volcanes · 5.916 m">
+                 data-title="Volcán Licancabur" data-category="Volcanes · 5.916 m"
+                 data-location="Volcán Licancabur" data-coords="22°50′S 67°53′O" data-alt="5.916 m"
+                 data-lat="-22.833" data-lng="-67.883">
                 <img src="https://picsum.photos/seed/licancabur-5916/1600/900" alt="Volcán Licancabur" loading="lazy">
                 <div class="item-overlay">
                     <div class="item-info">
@@ -832,7 +977,7 @@
     </section>
 
     <!-- CONTACT -->
-    <section class="contact-section" id="contact">
+    {{-- <section class="contact-section" id="contact">
         <div class="section-label" style="max-width:280px">
             <span class="section-number">03</span> Contact
         </div>
@@ -848,7 +993,7 @@
                 <a href="#">Vimeo</a>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- FOOTER -->
     <footer>
@@ -859,10 +1004,56 @@
     <!-- LIGHTBOX -->
     <div class="lightbox" id="lightbox">
         <button class="lb-close" id="lbClose">Cerrar ✕</button>
-        <button class="lb-prev" id="lbPrev">&#8592;</button>
-        <img class="lightbox-img" id="lbImg" src="" alt="">
-        <button class="lb-next" id="lbNext">&#8594;</button>
-        <div class="lb-caption"><p id="lbCaption"></p></div>
+
+        <!-- izquierda: foto -->
+        <div class="lb-left">
+            <img class="lightbox-img" id="lbImg" src="" alt="">
+            <div class="lb-nav">
+                <button class="lb-prev" id="lbPrev">&#8592;</button>
+                <button class="lb-next" id="lbNext">&#8594;</button>
+            </div>
+        </div>
+
+        <!-- derecha: info + mapa -->
+        <div class="lb-right">
+            <div class="lb-panel-head">
+                <div class="lb-panel-eyebrow">
+                    <span class="gps-dot"></span>
+                    Ubicación
+                </div>
+                <div class="lb-panel-name" id="lbLocName"><span class="lb-cursor"></span></div>
+                <div class="lb-panel-meta">
+                    <span id="lbLocCoords"></span>
+                    <span class="meta-alt" id="lbLocAlt"></span>
+                </div>
+            </div>
+
+            <div class="lb-route-wrap">
+                <p class="lb-route-label">Ruta trazada</p>
+                <svg class="lb-route-svg" id="lbRouteSvg" viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Líneas de terreno decorativas -->
+                    <path class="lb-route-terrain" d="M 0,65 Q 40,55 80,60 T 160,55 T 240,58 T 320,52"/>
+                    <path class="lb-route-terrain" d="M 0,72 Q 50,65 100,68 T 200,64 T 320,60"/>
+                    <!-- Ruta principal -->
+                    <path class="lb-route-path" id="lbRoutePath"
+                          d="M 20,62 C 50,58 70,30 110,28 S 180,42 220,35 S 280,20 300,22"/>
+                    <!-- Punto de origen -->
+                    <circle cx="20" cy="62" r="3" fill="rgba(196,87,31,.4)"/>
+                    <!-- Destino -->
+                    <circle class="lb-route-dot" id="lbRouteDot" cx="300" cy="22" r="5"/>
+                    <circle class="lb-route-dot-pulse" id="lbRoutePulse" cx="300" cy="22" r="5"/>
+                </svg>
+            </div>
+
+            <div class="lb-map-wrap">
+                <iframe id="lbMapFrame" src="" loading="lazy" title="Mapa"></iframe>
+                <div class="lb-map-overlay"></div>
+            </div>
+
+            <div class="lb-panel-foot">
+                <p class="lb-panel-category" id="lbCaption"></p>
+            </div>
+        </div>
     </div>
 
     <!-- VIDEO MODAL -->
@@ -915,27 +1106,86 @@
     });
 
     // ── LIGHTBOX ────────────────────────────
-    const photoItems = ()=> [...document.querySelectorAll('.gallery-item[data-src]:not(.hidden-item)')];
+    const photoItems  = ()=> [...document.querySelectorAll('.gallery-item[data-src]:not(.hidden-item)')];
     let lbIdx = 0;
-    const lightbox = document.getElementById('lightbox');
-    const lbImg    = document.getElementById('lbImg');
-    const lbCap    = document.getElementById('lbCaption');
+    const lightbox    = document.getElementById('lightbox');
+    const lbImg       = document.getElementById('lbImg');
+    const lbCap       = document.getElementById('lbCaption');
+    const lbLocName   = document.getElementById('lbLocName');
+    const lbLocCoords = document.getElementById('lbLocCoords');
+    const lbLocAlt    = document.getElementById('lbLocAlt');
+    const lbMapFrame  = document.getElementById('lbMapFrame');
+    const lbRoutePath = document.getElementById('lbRoutePath');
+    const lbRouteDot  = document.getElementById('lbRouteDot');
+    const lbRoutePulse= document.getElementById('lbRoutePulse');
+    let typeTimer = null;
+
+    function typeText(el, text, speed=40){
+        clearTimeout(typeTimer);
+        // conserva el cursor span
+        el.innerHTML = '<span class="lb-cursor"></span>';
+        let i = 0;
+        function next(){
+            el.innerHTML = text.slice(0,i) + '<span class="lb-cursor"></span>';
+            if(i++ < text.length) typeTimer = setTimeout(next, speed);
+        }
+        next();
+    }
+
+    function restartRouteAnim(){
+        [lbRoutePath, lbRouteDot, lbRoutePulse].forEach(el=>{
+            el.classList.remove('animate');
+            void el.getBoundingClientRect(); // fuerza reflow
+            el.classList.add('animate');
+        });
+    }
 
     function showLb(idx){
         const items = photoItems(); if(!items.length) return;
-        lbIdx = (idx+items.length)%items.length;
+        lbIdx = (idx + items.length) % items.length;
         const el = items[lbIdx];
+
+        // foto
         lbImg.src = el.dataset.src;
-        lbCap.textContent = el.dataset.category+' — '+el.dataset.title;
+        lbImg.style.animation = 'none';
+        void lbImg.getBoundingClientRect();
+        lbImg.style.animation = '';
+
+        // caption
+        lbCap.textContent = el.dataset.category + ' — ' + el.dataset.title;
+
+        // nombre con tipeo
+        const loc = el.dataset.location || '';
+        lbLocCoords.textContent = el.dataset.coords || '';
+        lbLocAlt.textContent    = el.dataset.alt    || '';
+        setTimeout(()=> typeText(lbLocName, loc, 42), 200);
+
+        // mapa
+        const lat = el.dataset.lat, lng = el.dataset.lng;
+        if(lat && lng){
+            const zoom = Math.abs(parseFloat(el.dataset.alt)) > 3000 ? 9 : 12;
+            lbMapFrame.src = `https://maps.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`;
+        } else {
+            lbMapFrame.src = '';
+        }
+
+        // animación ruta
+        restartRouteAnim();
     }
-    function closeLb(){ lightbox.classList.remove('open'); document.body.style.overflow=''; }
+
+    function closeLb(){
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+        clearTimeout(typeTimer);
+        lbMapFrame.src = '';
+    }
 
     document.querySelectorAll('.gallery-item[data-src]').forEach(el=>{
         el.addEventListener('click', ()=>{
             lbIdx = photoItems().indexOf(el);
             showLb(lbIdx);
             lightbox.classList.add('open');
-            document.body.style.overflow='hidden';
+            document.body.style.overflow = 'hidden';
         });
     });
     document.getElementById('lbClose').addEventListener('click', closeLb);
