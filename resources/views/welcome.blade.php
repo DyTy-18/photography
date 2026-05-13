@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MarKual — Photography & Film</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:300,400,500&family=cormorant-garamond:300,300i,400,400i,500,500i,600,600i" rel="stylesheet"/>
+    <link href="https://fonts.bunny.net/css?family=dm-sans:300,400,500&family=dm-serif-display:400,400i" rel="stylesheet"/>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* ── PALETA: Tierra volcánica + puna boliviana ── */
@@ -26,7 +26,7 @@
         body {
             background: var(--bg);
             color: var(--cream);
-            font-family: 'Instrument Sans', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             cursor: none;
             overflow-x: hidden;
         }
@@ -72,7 +72,7 @@
             border-bottom: 1px solid var(--border);
         }
         .nav-logo {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: 1.25rem; font-weight: 400; letter-spacing: .1em;
             color: var(--cream); text-decoration: none;
         }
@@ -116,7 +116,7 @@
             content: ''; width: 28px; height: 1px; background: var(--terracotta);
         }
         .hero-title {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: clamp(3.2rem, 8.5vw, 8rem);
             font-weight: 300; line-height: 1.02;
             color: var(--cream); max-width: 14ch;
@@ -179,7 +179,7 @@
             max-width: 860px; margin: 0 auto; position: relative;
         }
         .quote-glyph {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: 12rem; line-height: .5;
             color: var(--terracotta); opacity: .12;
             position: absolute; top: -1rem; left: -2rem;
@@ -195,7 +195,7 @@
             background: var(--terracotta); opacity: .5;
         }
         .quote-body {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: clamp(1.8rem, 4vw, 3.5rem);
             font-weight: 300; font-style: italic;
             line-height: 1.35; color: var(--cream);
@@ -243,12 +243,12 @@
         .location-row.volcan:hover .loc-num  { color: var(--ochre); }
         .location-row.selva:hover .loc-num   { color: var(--sage); }
         .loc-num {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: .85rem; color: var(--smoke);
             transition: color .25s;
         }
         .loc-name {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: clamp(1rem, 2vw, 1.65rem);
             font-weight: 400; color: rgba(237,227,204,.65);
             transition: color .25s;
@@ -322,7 +322,7 @@
         .item-cat.oc  { color: var(--ochre); }
         .item-cat.sg  { color: var(--sage); }
         .item-title {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: 1.15rem; color: var(--cream);
         }
 
@@ -371,7 +371,7 @@
             padding: 5rem 4rem; background: var(--smoke);
         }
         .about-quote {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: clamp(1.5rem, 2.3vw, 2.4rem);
             font-weight: 300; line-height: 1.45;
             color: rgba(237,227,204,.85);
@@ -415,7 +415,7 @@
             pointer-events: none;
         }
         .contact-title {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: clamp(4rem, 11vw, 10rem);
             font-weight: 300; line-height: .95;
             color: var(--cream); margin: 2rem 0 3.5rem; position: relative;
@@ -428,7 +428,7 @@
             position: relative;
         }
         .contact-email {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: 'DM Serif Display', serif;
             font-size: 1.5rem; font-weight: 300;
             color: rgba(237,227,204,.55); text-decoration: none;
             transition: color .3s;
