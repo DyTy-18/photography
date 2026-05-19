@@ -614,43 +614,80 @@
             .lightbox-img { max-height: 40vh; }
         }
 
-        /* ── LIGHTBOX BUY BLOCK ── */
-        .lb-buy-wrap {
-            padding: 1.4rem 2rem 2rem;
+        /* ── LIGHTBOX — ícono descarga ── */
+        .lb-buy-icon-wrap {
+            padding: 1.2rem 2rem 1.6rem;
             border-top: 1px solid var(--border);
+            display: flex; justify-content: center;
         }
-        .lb-buy-label {
-            font-size: .48rem; letter-spacing: .28em; text-transform: uppercase;
-            color: var(--muted); margin-bottom: 1rem;
+        .lb-buy-icon-btn {
+            background: none; border: 1px solid rgba(237,227,204,.12);
+            color: rgba(237,227,204,.3); cursor: none;
+            width: 46px; height: 46px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transition: border-color .25s, color .25s, background .25s;
         }
-        .lb-license-btns {
-            display: flex; gap: .35rem; margin-bottom: .85rem; flex-wrap: wrap;
+        .lb-buy-icon-btn:hover {
+            border-color: rgba(237,227,204,.5); color: var(--cream);
+            background: rgba(237,227,204,.05);
         }
-        .lb-lic {
-            padding: .32rem .85rem;
-            font-size: .48rem; letter-spacing: .15em; text-transform: uppercase;
-            border: 1px solid var(--border); background: transparent;
-            color: var(--muted); cursor: none; border-radius: 999px;
-            transition: all .22s;
+
+        /* ── PURCHASE MODAL ── */
+        .purchase-modal {
+            position: fixed; inset: 0; z-index: 3000;
+            display: none; align-items: center; justify-content: center;
+            background: rgba(8,7,4,.82);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
         }
-        .lb-lic:hover { color: var(--cream); border-color: var(--smoke); }
-        .lb-lic.active {
-            background: var(--terracotta); color: var(--cream);
-            border-color: var(--terracotta);
+        .purchase-modal.open { display: flex; }
+        .purchase-card {
+            background: var(--smoke); border: 1px solid var(--border);
+            padding: 2.8rem 2.5rem 2.2rem;
+            max-width: 360px; width: 100%; position: relative;
+            animation: lbIn .28s ease;
         }
-        .lb-lic-desc {
-            font-size: .58rem; line-height: 1.7;
-            color: rgba(237,227,204,.28); margin-bottom: 1.2rem; min-height: 2.6em;
-        }
-        .lb-buy-btn {
-            display: flex; align-items: center; justify-content: center; gap: .7rem;
-            width: 100%; padding: .9rem;
+        .pm-close {
+            position: absolute; top: 1.1rem; right: 1.4rem;
+            background: none; border: none; cursor: none;
             font-size: .5rem; letter-spacing: .2em; text-transform: uppercase;
-            background: #25D366; color: white; text-decoration: none;
-            transition: background .25s, transform .2s;
-            cursor: none;
+            color: rgba(237,227,204,.25); transition: color .25s;
         }
-        .lb-buy-btn:hover { background: #1fba5a; transform: translateY(-1px); }
+        .pm-close:hover { color: var(--cream); }
+        .pm-eyebrow {
+            font-size: .46rem; letter-spacing: .3em; text-transform: uppercase;
+            color: var(--terracotta); margin-bottom: .5rem;
+        }
+        .pm-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.35rem; color: var(--cream);
+            line-height: 1.2; margin-bottom: 2rem;
+        }
+        .pm-price {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3.2rem; font-weight: 300;
+            color: var(--cream); line-height: 1;
+        }
+        .pm-price-cur {
+            font-size: 1rem; opacity: .35;
+            margin-left: .3rem; font-family: 'DM Sans', sans-serif;
+        }
+        .pm-sub {
+            font-size: .46rem; letter-spacing: .2em; text-transform: uppercase;
+            color: var(--muted); margin: .5rem 0 2rem;
+        }
+        .pm-pay-btns {
+            display: flex; gap: .8rem;
+        }
+        .pm-pay-stripe, .pm-pay-paypal {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: .9rem; text-decoration: none; cursor: none;
+            transition: opacity .2s, transform .2s;
+            border: 1px solid transparent;
+        }
+        .pm-pay-stripe { background: #635BFF; color: #fff; }
+        .pm-pay-paypal { background: #0070BA; color: #fff; }
+        .pm-pay-stripe:hover, .pm-pay-paypal:hover { opacity: .84; transform: translateY(-1px); }
 
         /* ── VIDEO MODAL ── */
         .video-modal {
@@ -868,7 +905,7 @@
     <!-- HERO -->
     <section class="hero" id="hero">
         <img class="hero-img"
-             src="https://picsum.photos/seed/volcan-altiplano-hero/1920/1080"
+             src="/img/IMG_5098.JPEG"
              alt="Hero"
              onload="this.closest('.hero').classList.add('loaded')">
         <div class="hero-overlay"></div>
@@ -992,181 +1029,143 @@
 
         <div class="gallery-grid" id="galleryGrid">
 
-            <!-- 01 Llullailaco — full, el volcán abre la galería -->
-            <div class="gallery-item col-12 h-hero" data-cat="alta-montana"
-                 data-src="https://picsum.photos/seed/llullailaco-6739/1600/900"
-                 data-title="Volcán Llullailaco" data-category="Alta Montaña · 6.739 m"
-                 data-location="Volcán Llullailaco" data-coords="24°43′S 68°32′O" data-alt="6.739 m"
-                 data-lat="-24.717" data-lng="-68.533" data-date="Marzo 2025">
-                <img src="https://picsum.photos/seed/llullailaco-6739/1600/900" alt="Volcán Llullailaco" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat oc">Alta Montaña — 6.739 m</p>
-                        <p class="item-title">Volcán Llullailaco</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-12 h-hero" data-cat="alta-montana" data-src="/img/IMG_0827.JPEG" data-title="Bolivia, 2025" data-category="Alta Montaña" data-location="Sajama" data-coords="18°06′S 68°53′O" data-alt="6.542 m" data-lat="-18.1" data-lng="-68.88" data-date="Febrero 2025">
+                <img src="/img/IMG_0827.JPEG" alt="Bolivia, 2025">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Alta Montaña</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <!-- 02 San Antonio (7) + 03 Salta (5) -->
-            <div class="gallery-item col-7 h-tall" data-cat="trekking"
-                 data-src="https://picsum.photos/seed/san-antonio-cobres/900/1200"
-                 data-title="San Antonio de Los Cobres" data-category="Trekking · Puna Salteña"
-                 data-location="San Antonio de Los Cobres" data-coords="24°13′S 66°20′O" data-alt="3.775 m"
-                 data-lat="-24.217" data-lng="-66.333" data-date="Marzo 2025">
-                <img src="https://picsum.photos/seed/san-antonio-cobres/900/1200" alt="San Antonio de Los Cobres" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat tc">Trekking — Puna Salteña</p>
-                        <p class="item-title">San Antonio de Los Cobres</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-7 h-tall" data-cat="trekking" data-src="/img/IMG_0963.JPEG" data-title="Bolivia, 2025" data-category="Trekking" data-location="Coroico" data-coords="16°11′S 67°44′O" data-alt="1.700 m" data-lat="-16.18" data-lng="-67.73" data-date="Marzo 2025">
+                <img src="/img/IMG_0963.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Trekking</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-5 h-tall" data-cat="altiplano" data-src="/img/IMG_0980.JPEG" data-title="Bolivia, 2025" data-category="Altiplano" data-location="Oruro" data-coords="17°58′S 67°07′O" data-alt="3.706 m" data-lat="-17.97" data-lng="-67.12" data-date="Marzo 2025">
+                <img src="/img/IMG_0980.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Altiplano</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <div class="gallery-item col-5 h-tall" data-cat="cultura"
-                 data-src="https://picsum.photos/seed/salta-argentina/700/1200"
-                 data-title="Salta" data-category="Ciudades · Argentina"
-                 data-location="Salta" data-coords="24°47′S 65°24′O" data-alt="1.187 m"
-                 data-lat="-24.783" data-lng="-65.4" data-date="Febrero 2025">
-                <img src="https://picsum.photos/seed/salta-argentina/700/1200" alt="Salta" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat tc">Cultura — Argentina</p>
-                        <p class="item-title">Salta</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-7 h-mid" data-cat="trekking" data-src="/img/IMG_1075.JPEG" data-title="Bolivia, 2025" data-category="Trekking" data-location="Sorata" data-coords="15°47′S 68°39′O" data-alt="2.695 m" data-lat="-15.78" data-lng="-68.65" data-date="Abril 2025">
+                <img src="/img/IMG_1075.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Trekking</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-5 h-mid" data-cat="alta-montana" data-src="/img/IMG_1187.JPEG" data-title="Bolivia, 2025" data-category="Alta Montaña" data-location="Condoriri" data-coords="16°08′S 68°21′O" data-alt="5.648 m" data-lat="-16.13" data-lng="-68.35" data-date="Abril 2025">
+                <img src="/img/IMG_1187.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Alta Montaña</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <!-- Video — el viaje, full -->
-            <div class="gallery-item col-12 h-hero" data-cat="dron"
-                 data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                 data-title="2025 — El viaje" data-category="Dron · Aéreo">
-                <img src="https://picsum.photos/seed/video-2025-viaje/1600/900" alt="Video" loading="lazy">
-                <div class="item-overlay" style="opacity:1; background: linear-gradient(to top, rgba(8,7,4,.7) 0%, transparent 50%);">
-                    <div class="item-info">
-                        <p class="item-cat oc">Dron — 2025</p>
-                        <p class="item-title">El viaje</p>
-                    </div>
-                </div>
-                <div class="video-badge">
-                    <svg width="15" height="15" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                </div>
+            <div class="gallery-item col-4 h-tall" data-cat="amazonia" data-src="/img/IMG_1269.JPEG" data-title="Bolivia, 2025" data-category="Amazonía" data-location="Rurrenabaque" data-coords="14°26′S 67°32′O" data-alt="280 m" data-lat="-14.44" data-lng="-67.53" data-date="Mayo 2025">
+                <img src="/img/IMG_1269.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat sg">Amazonía</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-tall" data-cat="amazonia" data-src="/img/IMG_1362.JPG" data-title="Bolivia, 2025" data-category="Amazonía" data-location="Trinidad" data-coords="14°50′S 64°54′O" data-alt="160 m" data-lat="-14.83" data-lng="-64.9" data-date="Mayo 2025">
+                <img src="/img/IMG_1362.JPG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat sg">Amazonía</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-tall" data-cat="alta-montana" data-src="/img/IMG_1373.JPEG" data-title="Bolivia, 2025" data-category="Alta Montaña" data-location="Chearoco" data-coords="15°58′S 68°23′O" data-alt="6.127 m" data-lat="-15.96" data-lng="-68.38" data-date="Junio 2025">
+                <img src="/img/IMG_1373.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Alta Montaña</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <!-- 04 Jatun Q'asa (7) + 05 Serkhe Koullo (5) -->
-            <div class="gallery-item col-7 h-mid" data-cat="trekking"
-                 data-src="https://picsum.photos/seed/jatun-qasa-cbba/1100/800"
-                 data-title="Jatun Q'asa" data-category="Trekking · Cochabamba"
-                 data-location="Jatun Q'asa" data-coords="17°26′S 65°48′O" data-alt="~4.500 m"
-                 data-lat="-17.433" data-lng="-65.8" data-date="Junio 2025">
-                <img src="https://picsum.photos/seed/jatun-qasa-cbba/1100/800" alt="Jatun Q'asa" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat tc">Trekking — Cochabamba</p>
-                        <p class="item-title">Jatun Q'asa</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-8 h-mid" data-cat="altiplano" data-src="/img/IMG_1582.JPEG" data-title="Bolivia, 2025" data-category="Altiplano" data-location="Lago Titicaca" data-coords="15°51′S 69°20′O" data-alt="3.812 m" data-lat="-15.85" data-lng="-69.34" data-date="Junio 2025">
+                <img src="/img/IMG_1582.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Altiplano</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-mid" data-cat="alta-montana" data-src="/img/IMG_1585.JPEG" data-title="Bolivia, 2025" data-category="Alta Montaña" data-location="Illimani" data-coords="16°38′S 67°47′O" data-alt="6.438 m" data-lat="-16.63" data-lng="-67.78" data-date="Julio 2025">
+                <img src="/img/IMG_1585.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Alta Montaña</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <div class="gallery-item col-5 h-mid" data-cat="alta-montana"
-                 data-src="https://picsum.photos/seed/serkhe-koullo-lpz/700/800"
-                 data-title="Serkhe Koullo" data-category="Alta Montaña · 5.100 m"
-                 data-location="Serkhe Koullo" data-coords="16°30′S 68°10′O" data-alt="~5.100 m"
-                 data-lat="-16.5" data-lng="-68.167" data-date="Julio 2025">
-                <img src="https://picsum.photos/seed/serkhe-koullo-lpz/700/800" alt="Serkhe Koullo" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat oc">Alta Montaña — 5.100 m</p>
-                        <p class="item-title">Serkhe Koullo</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-12 h-hero" data-cat="altiplano" data-src="/img/IMG_2101.JPG" data-title="Bolivia, 2025" data-category="Altiplano" data-location="Salar de Uyuni" data-coords="20°28′S 66°50′O" data-alt="3.656 m" data-lat="-20.46" data-lng="-66.83" data-date="Julio 2025">
+                <img src="/img/IMG_2101.JPG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Altiplano</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <!-- 06 Jericó (4) + 07 Puerto Rico (4) + Video Pando (4) -->
-            <div class="gallery-item col-4 h-tall" data-cat="amazonia"
-                 data-src="https://picsum.photos/seed/jerico-pando-bv/600/950"
-                 data-title="Jericó" data-category="Amazonía · Pando"
-                 data-location="Jericó, Pando" data-coords="11°02′S 68°04′O" data-alt="~200 m"
-                 data-lat="-11.033" data-lng="-68.067" data-date="Agosto 2025">
-                <img src="https://picsum.photos/seed/jerico-pando-bv/600/950" alt="Jericó, Pando" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat sg">Amazonía — Pando</p>
-                        <p class="item-title">Jericó</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-6 h-mid" data-cat="altiplano" data-src="/img/IMG_2225.JPG" data-title="Bolivia, 2025" data-category="Altiplano" data-location="Salar de Coipasa" data-coords="19°28′S 68°08′O" data-alt="3.657 m" data-lat="-19.47" data-lng="-68.13" data-date="Julio 2025">
+                <img src="/img/IMG_2225.JPG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Altiplano</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-6 h-mid" data-cat="amazonia" data-src="/img/IMG_4130.JPG" data-title="Bolivia, 2025" data-category="Amazonía" data-location="Cobija, Pando" data-coords="11°02′S 68°46′O" data-alt="250 m" data-lat="-11.03" data-lng="-68.77" data-date="Agosto 2025">
+                <img src="/img/IMG_4130.JPG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat sg">Amazonía</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <div class="gallery-item col-4 h-tall" data-cat="amazonia"
-                 data-src="https://picsum.photos/seed/puerto-rico-pando-bv/600/950"
-                 data-title="Puerto Rico" data-category="Amazonía · Pando"
-                 data-location="Puerto Rico, Pando" data-coords="11°06′S 67°33′O" data-alt="~200 m"
-                 data-lat="-11.1" data-lng="-67.55" data-date="Agosto 2025">
-                <img src="https://picsum.photos/seed/puerto-rico-pando-bv/600/950" alt="Puerto Rico, Pando" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat sg">Amazonía — Pando</p>
-                        <p class="item-title">Puerto Rico</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-4 h-tall" data-cat="amazonia" data-src="/img/IMG_4131.JPG" data-title="Bolivia, 2025" data-category="Amazonía" data-location="Río Madre de Dios" data-coords="11°12′S 68°30′O" data-alt="220 m" data-lat="-11.2" data-lng="-68.5" data-date="Agosto 2025">
+                <img src="/img/IMG_4131.JPG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat sg">Amazonía</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-tall" data-cat="alta-montana" data-src="/img/IMG_4321.JPG" data-title="Bolivia, 2025" data-category="Alta Montaña" data-location="Huayna Potosí" data-coords="16°17′S 68°09′O" data-alt="6.088 m" data-lat="-16.28" data-lng="-68.15" data-date="Agosto 2025">
+                <img src="/img/IMG_4321.JPG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Alta Montaña</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-tall" data-cat="trekking" data-src="/img/IMG_4328.JPEG" data-title="Bolivia, 2025" data-category="Trekking" data-location="Yungas" data-coords="16°18′S 67°42′O" data-alt="2.200 m" data-lat="-16.3" data-lng="-67.7" data-date="Septiembre 2025">
+                <img src="/img/IMG_4328.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Trekking</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <div class="gallery-item col-4 h-tall" data-cat="amazonia"
-                 data-video="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                 data-title="Pando — Amazonía" data-category="Amazonía · Video">
-                <img src="https://picsum.photos/seed/video-amazonia-pando/600/950" alt="Video Amazonía" loading="lazy">
-                <div class="item-overlay" style="opacity:1; background: linear-gradient(to top, rgba(8,7,4,.65) 0%, transparent 55%);">
-                    <div class="item-info">
-                        <p class="item-cat sg">Amazonía — Video</p>
-                        <p class="item-title">Amazonía</p>
-                    </div>
-                </div>
-                <div class="video-badge">
-                    <svg width="15" height="15" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                </div>
+            <div class="gallery-item col-7 h-mid" data-cat="alta-montana" data-src="/img/IMG_4356.JPEG" data-title="Bolivia, 2025" data-category="Alta Montaña" data-location="Chachacomani" data-coords="15°47′S 68°43′O" data-alt="6.074 m" data-lat="-15.78" data-lng="-68.72" data-date="Septiembre 2025">
+                <img src="/img/IMG_4356.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Alta Montaña</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-5 h-mid" data-cat="dron" data-src="/img/IMG_4366.JPEG" data-title="Bolivia, 2025" data-category="Dron · Aéreo" data-location="La Paz" data-coords="16°30′S 68°09′O" data-alt="3.625 m" data-lat="-16.5" data-lng="-68.15" data-date="Septiembre 2025">
+                <img src="/img/IMG_4366.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Dron</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <!-- 08 Uturuncu (8) + detalle Potosí (4) -->
-            <div class="gallery-item col-8 h-mid" data-cat="alta-montana"
-                 data-src="https://picsum.photos/seed/uturuncu-6008/1200/800"
-                 data-title="Volcán Uturuncu" data-category="Alta Montaña · 6.008 m"
-                 data-location="Volcán Uturuncu" data-coords="22°16′S 67°11′O" data-alt="6.008 m"
-                 data-lat="-22.267" data-lng="-67.183" data-date="Septiembre 2025">
-                <img src="https://picsum.photos/seed/uturuncu-6008/1200/800" alt="Volcán Uturuncu" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat oc">Alta Montaña — 6.008 m</p>
-                        <p class="item-title">Volcán Uturuncu</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-12 h-hero" data-cat="dron" data-src="/img/IMG_5098.JPEG" data-title="Bolivia, 2025" data-category="Dron · Aéreo" data-location="Altiplano Central" data-coords="17°30′S 67°48′O" data-alt="3.800 m" data-lat="-17.5" data-lng="-67.8" data-date="Septiembre 2025">
+                <img src="/img/IMG_5098.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Dron</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <div class="gallery-item col-4 h-mid" data-cat="altiplano"
-                 data-src="https://picsum.photos/seed/altiplano-potosi/600/800"
-                 data-title="Altiplano" data-category="Altiplano · Potosí"
-                 data-location="Altiplano, Potosí" data-coords="20°10′S 66°18′O" data-alt="~3.700 m"
-                 data-lat="-20.167" data-lng="-66.3" data-date="Septiembre 2025">
-                <img src="https://picsum.photos/seed/altiplano-potosi/600/800" alt="Altiplano, Potosí" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat tc">Altiplano — Potosí</p>
-                        <p class="item-title">Altiplano</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-4 h-mid" data-cat="amazonia" data-src="/img/IMG_5114.JPEG" data-title="Bolivia, 2025" data-category="Amazonía" data-location="Beni" data-coords="14°12′S 65°48′O" data-alt="200 m" data-lat="-14.2" data-lng="-65.8" data-date="Octubre 2025">
+                <img src="/img/IMG_5114.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat sg">Amazonía</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-mid" data-cat="altiplano" data-src="/img/IMG_5120.JPEG" data-title="Bolivia, 2025" data-category="Altiplano" data-location="Potosí" data-coords="19°35′S 65°45′O" data-alt="3.976 m" data-lat="-19.58" data-lng="-65.75" data-date="Octubre 2025">
+                <img src="/img/IMG_5120.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Altiplano</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-mid" data-cat="alta-montana" data-src="/img/IMG_5144.JPEG" data-title="Bolivia, 2025" data-category="Alta Montaña" data-location="Chiar Khota" data-coords="16°27′S 68°07′O" data-alt="5.350 m" data-lat="-16.45" data-lng="-68.12" data-date="Octubre 2025">
+                <img src="/img/IMG_5144.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Alta Montaña</p><p class="item-title">Bolivia, 2025</p></div></div>
             </div>
 
-            <!-- 09 Licancabur — full, cierre épico -->
-            <div class="gallery-item col-12 h-hero" data-cat="alta-montana"
-                 data-src="https://picsum.photos/seed/licancabur-5916/1600/900"
-                 data-title="Volcán Licancabur" data-category="Alta Montaña · 5.916 m"
-                 data-location="Volcán Licancabur" data-coords="22°50′S 67°53′O" data-alt="5.916 m"
-                 data-lat="-22.833" data-lng="-67.883" data-date="Octubre 2025">
-                <img src="https://picsum.photos/seed/licancabur-5916/1600/900" alt="Volcán Licancabur" loading="lazy">
-                <div class="item-overlay">
-                    <div class="item-info">
-                        <p class="item-cat oc">Alta Montaña — 5.916 m</p>
-                        <p class="item-title">Volcán Licancabur</p>
-                    </div>
-                </div>
+            <div class="gallery-item col-8 h-tall" data-cat="trekking" data-src="/img/IMG_5297.JPG" data-title="Bolivia, 2025" data-category="Trekking" data-location="Valle de Zongo" data-coords="16°09′S 68°07′O" data-alt="2.800 m" data-lat="-16.15" data-lng="-68.12" data-date="Octubre 2025">
+                <img src="/img/IMG_5297.JPG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Trekking</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-tall" data-cat="trekking" data-src="/img/IMG_5645.JPEG" data-title="Bolivia, 2025" data-category="Trekking" data-location="Valle de la Luna" data-coords="16°34′S 68°06′O" data-alt="3.400 m" data-lat="-16.57" data-lng="-68.1" data-date="Noviembre 2025">
+                <img src="/img/IMG_5645.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Trekking</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+
+            <div class="gallery-item col-6 h-mid" data-cat="amazonia" data-src="/img/IMG_5806.JPG" data-title="Bolivia, 2025" data-category="Amazonía" data-location="Madidi" data-coords="13°30′S 68°00′O" data-alt="300 m" data-lat="-13.5" data-lng="-68.0" data-date="Noviembre 2025">
+                <img src="/img/IMG_5806.JPG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat sg">Amazonía</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-6 h-mid" data-cat="altiplano" data-src="/img/IMG_6037.JPEG" data-title="Bolivia, 2025" data-category="Altiplano" data-location="PN Sajama" data-coords="18°18′S 68°57′O" data-alt="4.200 m" data-lat="-18.3" data-lng="-68.95" data-date="Noviembre 2025">
+                <img src="/img/IMG_6037.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Altiplano</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+
+            <div class="gallery-item col-4 h-mid" data-cat="amazonia" data-src="/img/IMG_6047.JPEG" data-title="Bolivia, 2025" data-category="Amazonía" data-location="Noël Kempff" data-coords="14°42′S 60°48′O" data-alt="180 m" data-lat="-14.7" data-lng="-60.8" data-date="Noviembre 2025">
+                <img src="/img/IMG_6047.JPEG" alt="Bolivia, 2025" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat sg">Amazonía</p><p class="item-title">Bolivia, 2025</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-mid" data-cat="altiplano" data-src="/img/IMG_6079.JPEG" data-title="Laguna Colorada" data-category="Altiplano" data-location="Laguna Colorada, Potosí" data-coords="-22.17, -67.78" data-lat="-22.17" data-lng="-67.78" data-alt="4278 msnm" data-date="Noviembre 2025">
+                <img src="/img/IMG_6079.JPEG" alt="Laguna Colorada" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Altiplano</p><p class="item-title">Laguna Colorada</p></div></div>
+            </div>
+            <div class="gallery-item col-4 h-mid" data-cat="dron" data-src="/img/IMG_7278.JPG" data-title="Salar de Uyuni" data-category="Dron · Aéreo" data-location="Salar de Uyuni, Potosí" data-coords="-20.30, -67.00" data-lat="-20.30" data-lng="-67.00" data-alt="3660 msnm" data-date="Diciembre 2025">
+                <img src="/img/IMG_7278.JPG" alt="Salar de Uyuni" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Dron</p><p class="item-title">Salar de Uyuni</p></div></div>
+            </div>
+
+            <div class="gallery-item col-7 h-tall" data-cat="alta-montana" data-src="/img/IMG_7727.JPEG" data-title="Nevado Sajama" data-category="Alta Montaña" data-location="Nevado Sajama, Oruro" data-coords="-18.10, -68.88" data-lat="-18.10" data-lng="-68.88" data-alt="6542 msnm" data-date="Diciembre 2025">
+                <img src="/img/IMG_7727.JPEG" alt="Nevado Sajama" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat oc">Alta Montaña</p><p class="item-title">Nevado Sajama</p></div></div>
+            </div>
+            <div class="gallery-item col-5 h-tall" data-cat="cultura" data-src="/img/IMG_8382.JPG" data-title="La Paz" data-category="Ciudades · Cultura" data-location="La Paz, Bolivia" data-coords="-16.50, -68.15" data-lat="-16.50" data-lng="-68.15" data-alt="3625 msnm" data-date="Diciembre 2025">
+                <img src="/img/IMG_8382.JPG" alt="La Paz" loading="lazy">
+                <div class="item-overlay"><div class="item-info"><p class="item-cat tc">Cultura</p><p class="item-title">La Paz</p></div></div>
             </div>
 
         </div>
@@ -1186,7 +1185,7 @@
     <!-- ABOUT -->
     <section class="about-section" id="about">
         <div class="about-photo">
-            <img src="https://picsum.photos/seed/marco-portrait-bv/800/1100" alt="Marco">
+            <img src="/img/profile/foto_mark.jpeg" alt="Marco">
         </div>
         <div class="about-text">
             <div class="section-label" style="max-width:280px">
@@ -1255,6 +1254,27 @@
         </div>
     </section>
 
+    <!-- PURCHASE MODAL -->
+    <div class="purchase-modal" id="purchaseModal">
+        <div class="purchase-card">
+            <button class="pm-close" id="pmClose">Cerrar ✕</button>
+            <p class="pm-eyebrow">Descargar imagen</p>
+            <p class="pm-title" id="pmTitle"></p>
+            <p class="pm-price">$25<span class="pm-price-cur">USD</span></p>
+            <p class="pm-sub">Alta resolución · Licencia incluida</p>
+            <div class="pm-pay-btns">
+                <!-- Stripe -->
+                <a href="#" class="pm-pay-stripe" id="pmStripe" aria-label="Pagar con Stripe">
+                    <img src="https://cdn.simpleicons.org/stripe/ffffff" height="22" alt="Stripe">
+                </a>
+                <!-- PayPal -->
+                <a href="#" class="pm-pay-paypal" id="pmPaypal" aria-label="Pagar con PayPal">
+                    <img src="https://cdn.simpleicons.org/paypal/ffffff" height="22" alt="PayPal">
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer>
         <span>© {{ date('Y') }} MarKual — @markualko</span>
@@ -1314,20 +1334,14 @@
                 <p class="lb-panel-category" id="lbCaption"></p>
             </div>
 
-            <div class="lb-buy-wrap">
-                <p class="lb-buy-label">Adquirir imagen</p>
-                <div class="lb-license-btns">
-                    <button class="lb-lic active" data-lic="personal">Personal</button>
-                    <button class="lb-lic" data-lic="comercial">Comercial</button>
-                    <button class="lb-lic" data-lic="editorial">Editorial</button>
-                </div>
-                <p class="lb-lic-desc" id="lbLicDesc">Impresión y uso privado, sin fines comerciales.</p>
-                <a href="#" class="lb-buy-btn" id="lbBuyBtn" target="_blank" rel="noopener">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+            <div class="lb-buy-icon-wrap">
+                <button class="lb-buy-icon-btn" id="lbDownloadBtn" title="Descargar imagen">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor" stroke-width="1.5"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3v13M7 11l5 5 5-5M3 21h18"/>
                     </svg>
-                    Consultar por WhatsApp
-                </a>
+                </button>
             </div>
         </div>
     </div>
@@ -1496,47 +1510,30 @@
     document.getElementById('vmClose').addEventListener('click', closeVm);
     vm.addEventListener('click', e=>{ if(e.target===vm) closeVm(); });
 
-    // ── COMPRA / LICENCIAS ───────────────────
-    const licDescs = {
-        personal:  'Impresión y uso privado, sin fines comerciales.',
-        comercial: 'Uso en campañas publicitarias, productos o marcas.',
-        editorial: 'Publicaciones, medios de comunicación y artículos.'
-    };
-    const licLabels = {
-        personal:  'Uso Personal',
-        comercial: 'Licencia Comercial',
-        editorial: 'Licencia Editorial'
-    };
-    let activeLic = 'personal';
-    const lbLicDesc = document.getElementById('lbLicDesc');
-    const lbBuyBtn  = document.getElementById('lbBuyBtn');
+    // ── PURCHASE MODAL ───────────────────────
+    const purchaseModal = document.getElementById('purchaseModal');
+    const pmTitle       = document.getElementById('pmTitle');
 
-    document.querySelectorAll('.lb-lic').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.lb-lic').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeLic = btn.dataset.lic;
-            lbLicDesc.textContent = licDescs[activeLic];
-            updateBuyBtn();
-        });
-    });
-
-    function updateBuyBtn(){
+    function openPurchaseModal(){
         const items = photoItems();
         if(!items.length) return;
-        const el    = items[lbIdx];
-        const title = el.dataset.title    || '';
-        const cat   = el.dataset.category || '';
-        const msg   = encodeURIComponent(
-            `Hola @markualko, me interesa adquirir la fotografía "${title}" (${cat}) para ${licLabels[activeLic]}. ¿Podemos hablar?`
-        );
-        // reemplazá XXXXXXXXXXX con el número de WhatsApp real
-        lbBuyBtn.href = `https://wa.me/XXXXXXXXXXX?text=${msg}`;
+        pmTitle.textContent = items[lbIdx].dataset.title || '';
+        purchaseModal.classList.add('open');
+        document.body.style.overflow = 'hidden';
     }
+    function closePurchaseModal(){
+        purchaseModal.classList.remove('open');
+    }
+
+    document.getElementById('lbDownloadBtn').addEventListener('click', openPurchaseModal);
+    document.getElementById('pmClose').addEventListener('click', closePurchaseModal);
+    purchaseModal.addEventListener('click', e => { if(e.target === purchaseModal) closePurchaseModal(); });
+
+    function updateBuyBtn(){} // reset al cambiar foto (modal se cierra solo con Escape)
 
     // ── KEYBOARD ─────────────────────────────
     document.addEventListener('keydown', e=>{
-        if(e.key==='Escape')     { closeLb(); closeVm(); }
+        if(e.key==='Escape')     { closeLb(); closeVm(); closePurchaseModal(); }
         if(e.key==='ArrowRight') showLb(lbIdx+1);
         if(e.key==='ArrowLeft')  showLb(lbIdx-1);
     });
