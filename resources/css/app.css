@@ -1,11 +1,98 @@
 @import 'tailwindcss';
 
+/* motion-ok: GSAP arrancó (sin reduced-motion). Las secciones ancladas solo se alargan entonces. */
+@custom-variant motion-ok (&:where(.motion-ok, .motion-ok *));
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* ── TOKENS ──
+   Interfaz monocroma sobre papel, con bandas negras. El único color está en la luz
+   líquida del hero (shader) y en las fotos. */
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Hanken Grotesk', ui-sans-serif, sans-serif;
+
+    --color-paper: #f5f4f0;      /* lienzo, blanco cálido */
+    --color-ink: #0c0c0b;        /* texto y bandas oscuras */
+    --color-ink-soft: #161615;   /* paneles sobre bandas oscuras */
+    --color-gray-light: #66665f; /* texto secundario sobre paper (5.3:1) */
+    --color-gray-dark: #8f8f8a;  /* texto secundario sobre ink (6:1) */
+    --color-rule-light: #d8d6cf; /* líneas finas sobre paper (decoración) */
+    --color-rule-dark: #2a2a28;  /* líneas finas sobre ink (decoración) */
+
+    /* Escala tipográfica: susurro grande, etiqueta pequeña */
+    --text-caption: 0.75rem;
+    --text-caption--line-height: 1.4;
+    --text-display: clamp(3.5rem, 10.5vw, 12.5rem);
+    --text-display--line-height: 0.9;
+    --text-display--letter-spacing: -0.04em;
+    --text-statement: clamp(1.75rem, 4.4vw, 4.25rem);
+    --text-statement--line-height: 1.12;
+    --text-statement--letter-spacing: -0.02em;
+    --text-title: clamp(2.25rem, 4.6vw, 4.5rem);
+    --text-title--line-height: 0.95;
+    --text-title--letter-spacing: -0.03em;
+
+    /* Curvas: glide para superficies de presentación (≤ 800ms), out para UI (≤ 300ms) */
+    --ease-glide: cubic-bezier(0.19, 1, 0.22, 1);
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+    --animate-spin-slow: spin 22s linear infinite;
+    --animate-gps-pulse: gps-pulse 1.8s var(--ease-out) infinite;
+    --animate-blink: blink 0.7s step-end infinite;
+    --animate-lb-in: lb-in 250ms var(--ease-out);
+
+    @keyframes gps-pulse {
+        0%   { box-shadow: 0 0 0 0 rgb(245 244 240 / 0.45); }
+        70%  { box-shadow: 0 0 0 8px rgb(245 244 240 / 0); }
+        100% { box-shadow: 0 0 0 0 rgb(245 244 240 / 0); }
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes lb-in {
+        from { opacity: 0; transform: scale(0.97); }
+        to   { opacity: 1; transform: scale(1); }
+    }
+}
+
+@layer base {
+    html { scroll-behavior: smooth; }
+
+    body {
+        background: var(--color-paper);
+        color: var(--color-ink);
+        font-family: var(--font-sans);
+        overflow-x: clip;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--color-ink); color: var(--color-paper); }
+
+    :focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        *, *::before, *::after {
+            animation-duration: 1ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 1ms !important;
+        }
+    }
+}
+
+@layer components {
+    /* Intro: desde el primer pintado la foto ya está difuminada y el titular oculto, para que
+       nunca se vea el estado final antes de la niebla. Si no hay WebGL, story.js pone .no-fog. */
+    .motion-ok [data-intro]:not(.no-fog) [data-intro-photo] img { filter: blur(18px); transform: scale(1.06); }
+    .motion-ok [data-intro-line] { opacity: 0; }
+
+    /* WhatsApp: escondido durante la niebla; story.js le pone .is-on cuando la intro termina */
+    .motion-ok [data-wa]:not(.is-on) { opacity: 0; translate: 0 12px; scale: 0.96; pointer-events: none; }
+
+    /* Bloques que GSAP anima: sin JS o con reduced-motion se ven tal cual */
+    [data-intro-line], [data-line] { will-change: transform; }
 }

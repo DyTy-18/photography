@@ -1,1 +1,3 @@
-import './bootstrap';
+import { initStory } from './story';
+
+initStory();
