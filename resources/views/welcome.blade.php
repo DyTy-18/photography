@@ -39,12 +39,13 @@
             <picture>
                 <source type="image/webp" srcset="/img/web/logo-a-reflejo-crema.webp">
                 <img src="/img/web/logo-a-reflejo-crema.png" alt="markualko" width="2231" height="419"
-                     class="h-7 w-auto transition-[filter] duration-300 ease-out group-data-[theme=light]:brightness-[.18] md:h-8">
+                     class="h-6 w-auto transition-[filter] duration-300 ease-out group-data-[theme=light]:brightness-[.18] sm:h-7 md:h-8">
             </picture>
         </a>
-        <div class="flex gap-5 text-caption sm:gap-8">
+        {{-- En móvil no caben los cuatro enlaces junto al logo: "Viaje" (la primera sección tras la intro) se queda fuera --}}
+        <div class="flex gap-4 text-caption whitespace-nowrap sm:gap-8">
             @foreach (['#ciudades' => 'Viaje', '#archivo' => 'Archivo', '#sobre-mi' => 'Sobre mí', '#contacto' => 'Contacto'] as $href => $text)
-                <a href="{{ $href }}" class="transition-opacity duration-200 ease-out hover:opacity-60">{{ $text }}</a>
+                <a href="{{ $href }}" @class(['py-3 transition-opacity duration-200 ease-out hover:opacity-60', 'hidden sm:block' => $loop->first])>{{ $text }}</a>
             @endforeach
         </div>
     </nav>
