@@ -30,6 +30,15 @@ export function initStory() {
         gsap.ticker.lagSmoothing(0);
         window.lenis = lenis; // el lightbox lo para y lo reanuda
 
+        // Lenis hace el scroll de los enlaces #sección pero no toca la URL: la actualizamos para
+        // que se pueda copiar y compartir desde la barra de direcciones
+        const onAnchor = (e) => {
+            const a = e.target.closest('a[href^="#"]');
+            if (!a || a.hash.length < 2) return;
+            history.replaceState(null, '', a.hash === '#inicio' ? location.pathname + location.search : a.hash);
+        };
+        document.addEventListener('click', onAnchor);
+
         window.scrollTo(0, 0);
         intro();
         cards();
@@ -42,6 +51,11 @@ export function initStory() {
         reveals();
 
         ScrollTrigger.refresh();
+
+        // Enlace directo a una sección (/#experimenta, /#contacto...): la intro no obliga a empezar arriba
+        const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (target) lenis.scrollTo(target, { immediate: true, force: true });
+
         // El archivo cambia de alto al filtrar o al cargar más fotos
         const onArchive = () => ScrollTrigger.refresh();
         window.addEventListener('archive:resize', onArchive);
@@ -50,6 +64,7 @@ export function initStory() {
 
         return () => {
             window.removeEventListener('archive:resize', onArchive);
+            document.removeEventListener('click', onAnchor);
             gsap.ticker.remove(raf);
             lenis.destroy();
             window.lenis = null;
@@ -62,7 +77,8 @@ export function initStory() {
 // Con reduced-motion no se llega aquí: se ve la foto tal cual, sin canvas.
 function intro() {
     const section = document.querySelector('[data-intro]');
-    if (!section) return;
+    // Páginas sin intro (/rutas): el WhatsApp flotante se ve desde el principio
+    if (!section) { document.querySelector('[data-wa]')?.classList.add('is-on'); return; }
     const canvas = section.querySelector('[data-intro-fog]');
     const img = section.querySelector('[data-intro-photo] img');
     const lines = section.querySelectorAll('[data-intro-line]');

@@ -40,6 +40,18 @@ class Portfolio
         return $this->photos->get($id);
     }
 
+    /** URL absoluta de una versión ~1200-1600px de la foto, para Open Graph (vista previa al compartir). */
+    public function ogImage(string $id): ?string
+    {
+        $photo = $this->photo($id);
+        if (! $photo) {
+            return null;
+        }
+        $w = collect($photo['widths'])->filter(fn ($w) => $w <= 1600)->last() ?? last($photo['widths']);
+
+        return url("/img/web/{$id}-{$w}.webp");
+    }
+
     /** @param  array<string>  $ids */
     public function many(array $ids): array
     {

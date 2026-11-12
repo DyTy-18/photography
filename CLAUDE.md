@@ -5,9 +5,14 @@ Bolivia, Argentina y Chile.
 
 ## Stack
 
-- Laravel 12 (PHP 8.2+). Una sola ruta `/` en `routes/web.php` que devuelve `welcome`.
+- Laravel 12 (PHP 8.2+). Rutas en `routes/web.php`: `/` (`welcome`), `/rutas` y `/rutas/{slug}`
+  (`rutas`, abre el popup de esa ruta; es el enlace para compartir) y `POST /solicitudes`.
+  El middleware `GuardarOrigen` guarda UTM/referrer en la sesión en las páginas GET.
 - Vista: `resources/views/welcome.blade.php` con Tailwind 4 (tokens en `resources/css/app.css`)
-  y componentes en `resources/views/components/` (`picture`, `chapter`, `section-label`).
+  y componentes en `resources/views/components/` (`picture`, `chapter`, `section-label`, `nav`).
+  Partials compartidos por las dos páginas en `resources/views/partials/` (`rutas`, `footer`, `meta`).
+- Secciones enlazables: `/#experimenta` (rutas), `/#archivo`, `/#sobre-mi`, `/#contacto`...
+  `story.js` respeta el hash al cargar y lo escribe en la URL al hacer clic en el menú.
 - Animaciones de scroll: GSAP 3 + ScrollTrigger y Lenis, en `resources/js/story.js`. La neblina
   de la intro es un shader WebGL propio sobre la foto del hero, en `resources/js/fog.js`.
 - Vite 7 (`npm run dev` / `npm run build`). Fuente: Hanken Grotesk desde Bunny Fonts.
@@ -34,6 +39,11 @@ Bolivia, Argentina y Chile.
 - Contacto = captura de leads: formulario + WhatsApp + parámetros UTM. No usar `mailto:`
   ni Formspree como solución de contacto.
 - Sin créditos de plantillas o herramientas en el footer público.
+- Rutas y reservas: las rutas se editan en `config/rutas.php` (sin precios). El formulario
+  `#reservar` hace POST a `/solicitudes` (`SolicitudController`), guarda el lead en la tabla
+  `solicitudes` con los UTM de la visita y abre WhatsApp (`WHATSAPP_NUMBER`) con el mensaje
+  ya escrito. Sin correo: todo el contacto va por WhatsApp. En producción hace falta
+  `php artisan migrate`.
 
 ## Skills del proyecto
 

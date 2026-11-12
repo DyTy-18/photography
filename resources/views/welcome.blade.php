@@ -16,6 +16,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MarKual — Photography & Film</title>
+    @include('partials.meta', [
+        'title' => 'MarKual — Photography & Film',
+        'description' => 'Fotos y vídeo de viajes por Bolivia, Argentina y Chile, y rutas para recorrer Bolivia con Marco.',
+        'canonical' => url('/'),
+        'image' => $p->ogImage($story['hero']['desktop']),
+    ])
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=hanken-grotesk:300,400,500&display=swap" rel="stylesheet"/>
     <link rel="preload" as="image" type="image/avif"
@@ -32,23 +38,9 @@
     <div id="page">
 
     <!-- NAV: cambia de tinta según la banda que tiene debajo (data-nav) -->
-    <nav id="mainNav" aria-label="Principal" data-theme="dark"
-         class="group fixed inset-x-0 top-0 z-[200] flex h-[66px] items-center justify-between border-b border-transparent px-4 text-paper transition-[color,background-color,border-color] duration-300 ease-out md:grid-cols-3 md:px-10 data-[theme=light]:border-rule-light data-[theme=light]:bg-paper/85 data-[theme=light]:text-ink data-[theme=light]:backdrop-blur-md">
-        <a href="#inicio" aria-label="markualko, inicio" class="block">
-            {{-- Logo de prueba (crema). En la barra clara se oscurece con un filtro; con una versión oscura del logo sobraría. --}}
-            <picture>
-                <source type="image/webp" srcset="/img/web/logo-a-reflejo-crema.webp">
-                <img src="/img/web/logo-a-reflejo-crema.png" alt="markualko" width="2231" height="419"
-                     class="h-6 w-auto transition-[filter] duration-300 ease-out group-data-[theme=light]:brightness-[.18] sm:h-7 md:h-8">
-            </picture>
-        </a>
-        {{-- En móvil no caben los cuatro enlaces junto al logo: "Viaje" (la primera sección tras la intro) se queda fuera --}}
-        <div class="flex gap-4 text-caption whitespace-nowrap sm:gap-8">
-            @foreach (['#ciudades' => 'Viaje', '#archivo' => 'Archivo', '#sobre-mi' => 'Sobre mí', '#contacto' => 'Contacto'] as $href => $text)
-                <a href="{{ $href }}" @class(['py-3 transition-opacity duration-200 ease-out hover:opacity-60', 'hidden sm:block' => $loop->first])>{{ $text }}</a>
-            @endforeach
-        </div>
-    </nav>
+    <x-nav home="#inicio" theme="dark" :soloEscritorio="['#ciudades', '#sobre-mi']" :links="[
+        '#ciudades' => 'Viaje', '#archivo' => 'Archivo', '#experimenta' => 'Rutas', '#sobre-mi' => 'Sobre mí', '#contacto' => 'Contacto',
+    ]" />
 
     <main>
 
@@ -354,6 +346,8 @@
         </div>
     </section>
 
+    @include('partials.rutas')
+
     <!-- 10 · CIERRE: contacto sobre el salar -->
     @php $cta = $p->photo($story['cta']); @endphp
     <section id="contacto" data-band data-nav="dark" class="relative overflow-hidden bg-ink text-paper">
@@ -376,7 +370,7 @@
                     @foreach ([
                         ['https://www.instagram.com/markualko', 'Instagram'],
                         ['https://www.threads.net/@markualko', 'Threads'],
-                        ['https://wa.me/XXXXXXXXXXX', 'WhatsApp'],
+                        ['https://wa.me/'.config('contacto.whatsapp'), 'WhatsApp'],
                     ] as [$href, $name])
                         <li class="border-t border-paper/20 last:border-b">
                             <a href="{{ $href }}" target="_blank" rel="noopener"
@@ -393,22 +387,7 @@
 
     </main>
 
-    <!-- FOOTER -->
-    <footer data-nav="dark" class="bg-ink text-gray-dark">
-        <div class="{{ $wrap }} grid gap-2 border-t border-rule-dark py-10 text-caption md:grid-cols-3">
-            <span>© {{ date('Y') }} MarKual</span>
-            <span class="md:text-center">Bolivia · Argentina · Chile</span>
-            <span class="md:text-right">@markualko</span>
-        </div>
-    </footer>
-
-    <!-- WHATSAPP FLOTANTE — reemplaza XXXXXXXXXXX con el número completo sin + ni espacios -->
-    <a href="https://wa.me/XXXXXXXXXXX" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp" data-wa
-       class="fixed right-4 bottom-4 z-[500] flex size-14 items-center justify-center rounded-full border border-paper/25 bg-ink text-paper transition-[background-color,color,scale,opacity,translate] duration-300 ease-out hover:bg-paper hover:text-ink active:scale-[.97] md:right-8 md:bottom-8">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-        </svg>
-    </a>
+    @include('partials.footer')
 
     </div>{{-- /#page --}}
 
